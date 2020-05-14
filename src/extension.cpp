@@ -71,8 +71,9 @@ void* GetAddressFromKeyValues(void* pBaseAddr, IGameConfig* pGameConfig, const c
 		return nullptr;
 
 #ifdef _LINUX
-	// The pointer returned by dlopen is not inside the loaded librarys memory region.
-	struct link_map* dlmap = (struct link_map*)pBaseAddr;
+	// The pointer returned by dlopen is not inside the loaded library memory region.
+	struct link_map* dlmap;
+	dlinfo(pBaseAddr, RTLD_DI_LINKMAP, &dlmap);
 	pBaseAddr = (void*)dlmap->l_addr;
 #endif
 
@@ -135,10 +136,10 @@ void LoadSoundscript::SDK_OnAllLoaded()
 	SM_GET_LATE_IFACE(BINTOOLS, bintools);
 
 	PassInfo passinfo[] = {
-		{PassType_Basic, PASSFLAG_BYVAL, sizeof(char*), NULL, NULL},
-		{PassType_Basic, PASSFLAG_BYVAL, sizeof(bool), NULL, NULL},
-		{PassType_Basic, PASSFLAG_BYVAL, sizeof(bool), NULL, NULL},
-		{PassType_Basic, PASSFLAG_BYVAL, sizeof(bool), NULL, NULL}
+		{PassType_Basic, PASSFLAG_BYVAL, sizeof(char*), NULL, 0},
+		{PassType_Basic, PASSFLAG_BYVAL, sizeof(bool), NULL, 0},
+		{PassType_Basic, PASSFLAG_BYVAL, sizeof(bool), NULL, 0},
+		{PassType_Basic, PASSFLAG_BYVAL, sizeof(bool), NULL, 0}
 	};
 
 	g_pCallAddSoundsFromFile = bintools->CreateCall(g_pAddSnd, CallConv_ThisCall, NULL, passinfo, 4);
@@ -173,5 +174,5 @@ static cell_t Native_LoadSoundscript(IPluginContext *pContext, const cell_t *par
 
 	AddSoundsFromFile(sPath, params[2], params[3], params[4]);
 
-	return NULL;
+	return 0;
 }
