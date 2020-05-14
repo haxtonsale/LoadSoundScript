@@ -16,7 +16,7 @@ native void LoadSoundScript(const char[] sPath, bool bPreload, bool bIsOverride 
 public Extension __ext_loadsoundscript = 
 {
 	name = "LoadSoundscript",
-	file = "loadsoundscript.ext.2.ep2v",
+	file = "loadsoundscript.ext",
 #if defined AUTOLOAD_EXTENSIONS
 	autoload = 1,
 #else

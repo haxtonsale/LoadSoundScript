@@ -125,20 +125,6 @@ bool LoadSoundscript::SDK_OnLoad(char *error, size_t maxlen, bool late)
 		return false;
 	}
 
-	PassInfo passinfo[] = {
-		{PassType_Basic, PASSFLAG_BYVAL, sizeof(char*), NULL, NULL},
-		{PassType_Basic, PASSFLAG_BYVAL, sizeof(bool), NULL, NULL},
-		{PassType_Basic, PASSFLAG_BYVAL, sizeof(bool), NULL, NULL},
-		{PassType_Basic, PASSFLAG_BYVAL, sizeof(bool), NULL, NULL}
-	};
-
-	g_pCallAddSoundsFromFile = bintools->CreateCall(g_pAddSnd, CallConv_ThisCall, NULL, passinfo, 4);
-	if (!g_pCallAddSoundsFromFile)
-	{
-		ke::SafeStrcpy(error, maxlen, "Could not create call to CSoundEmitterSystemBase::AddSoundsFromFile");
-		return false;
-	}
-
 	gameconfs->CloseGameConfigFile(pGameConfig);
 
 	return true;
@@ -147,6 +133,15 @@ bool LoadSoundscript::SDK_OnLoad(char *error, size_t maxlen, bool late)
 void LoadSoundscript::SDK_OnAllLoaded()
 {
 	SM_GET_LATE_IFACE(BINTOOLS, bintools);
+
+	PassInfo passinfo[] = {
+		{PassType_Basic, PASSFLAG_BYVAL, sizeof(char*), NULL, NULL},
+		{PassType_Basic, PASSFLAG_BYVAL, sizeof(bool), NULL, NULL},
+		{PassType_Basic, PASSFLAG_BYVAL, sizeof(bool), NULL, NULL},
+		{PassType_Basic, PASSFLAG_BYVAL, sizeof(bool), NULL, NULL}
+	};
+
+	g_pCallAddSoundsFromFile = bintools->CreateCall(g_pAddSnd, CallConv_ThisCall, NULL, passinfo, 4);
 
 	sharesys->AddNatives(myself, g_ExtensionNatives);
 	sharesys->RegisterLibrary(myself, "LoadSoundscript");
