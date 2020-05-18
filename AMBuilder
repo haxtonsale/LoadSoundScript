@@ -6,6 +6,7 @@ projectName = 'loadsoundscript'
 # smsdk_ext.cpp will be automatically added later
 sourceFiles = [
   'src/extension.cpp',
+  'src/soundscript.cpp',
 ]
 
 ###############

@@ -1266,11 +1266,13 @@
   <ItemGroup>
     <ClCompile Include="..\sdk\smsdk_ext.cpp" />
     <ClCompile Include="..\src\extension.cpp" />
+    <ClCompile Include="..\src\soundscript.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\sdk\smsdk_config.h" />
     <ClInclude Include="..\sdk\smsdk_ext.h" />
     <ClInclude Include="..\src\extension.h" />
+    <ClInclude Include="..\src\soundscript.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

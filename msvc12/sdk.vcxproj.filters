@@ -24,16 +24,22 @@
     <ClCompile Include="..\src\extension.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\soundscript.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\sdk\smsdk_config.h">
       <Filter>SourceMod SDK</Filter>
     </ClInclude>
-    <ClInclude Include="..\sdk\smsdk_ext.h">
-      <Filter>SourceMod SDK</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\extension.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\soundscript.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sdk\smsdk_ext.h">
+      <Filter>SourceMod SDK</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

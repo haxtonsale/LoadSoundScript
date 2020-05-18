@@ -235,6 +235,7 @@ class ExtensionConfig(object):
     ]
     cxx.linkflags += [
       '/MACHINE:X86',
+      'legacy_stdio_definitions.lib',
       'kernel32.lib',
       'user32.lib',
       'gdi32.lib',

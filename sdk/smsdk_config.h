@@ -9,7 +9,7 @@
 /* Basic information exposed publicly */
 #define SMEXT_CONF_NAME			"LoadSoundscript"
 #define SMEXT_CONF_DESCRIPTION	"Load custom soundscripts in SM plugins"
-#define SMEXT_CONF_VERSION		"0.1.0"
+#define SMEXT_CONF_VERSION		"0.2.0"
 #define SMEXT_CONF_AUTHOR		"haxtonsale"
 #define SMEXT_CONF_URL			"https://github.com/haxtonsale"
 #define SMEXT_CONF_LOGTAG		"SNDSCRIPT"
@@ -29,7 +29,7 @@
 
 /** Enable interfaces you want to use here by uncommenting lines */
 #define SMEXT_ENABLE_FORWARDSYS
-//#define SMEXT_ENABLE_HANDLESYS
+#define SMEXT_ENABLE_HANDLESYS
 //#define SMEXT_ENABLE_PLAYERHELPERS
 //#define SMEXT_ENABLE_DBMANAGER
 #define SMEXT_ENABLE_GAMECONF
