@@ -1,6 +1,6 @@
 # LoadSoundScript
 
-A SourceMod extension that provides a function that allows plugins to load soundscripts.
+A SourceMod extension that provides more soundscript functionality.
 
 ## Usage
 Loading a soundscript and playing one of the loaded sounds to a client:
@@ -18,7 +18,7 @@ public void OnPluginStart()
 
 public Action Cmd_SoundScriptTest(int iClient, int iArgs)
 {
-	// Whichever sounds were in the file can now be emitted via EmiteGameSound
+	// Whichever sounds were in the file can now be emitted via EmitGameSound
 	EmitGameSoundToClient(iClient, "LoadSoundScript.NewSound");
 }
 ```
