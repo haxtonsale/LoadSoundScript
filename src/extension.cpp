@@ -410,7 +410,7 @@ namespace LoadSoundscriptNative
 
 		CUtlSymbol sym = sndparams->GetSoundNames()[params[2]].symbol;
 		const char* name = soundemittersystem->GetWaveName(sym);
-		pContext->StringToLocal(params[3], (size_t)params[4], name);
+		pContext->StringToLocal(params[3], (size_t)params[4], PSkipSoundChars(name));
 
 		return 0;
 	}

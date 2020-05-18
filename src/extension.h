@@ -10,6 +10,7 @@
 #include "extensions/iBinTools.h"
 #include <sm_argbuffer.h>
 #include "soundscript.h"
+#include "soundchars.h"
 
 #ifdef _LINUX
 #include <link.h>
