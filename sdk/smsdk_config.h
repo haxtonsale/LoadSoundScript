@@ -8,12 +8,12 @@
 
 /* Basic information exposed publicly */
 #define SMEXT_CONF_NAME			"LoadSoundscript"
-#define SMEXT_CONF_DESCRIPTION	"Load custom soundscripts in SM plugins"
-#define SMEXT_CONF_VERSION		"0.2.0"
+#define SMEXT_CONF_DESCRIPTION	"More soundscript functionality in your SM plugins"
+#define SMEXT_CONF_VERSION		"0.3.0"
 #define SMEXT_CONF_AUTHOR		"haxtonsale"
-#define SMEXT_CONF_URL			"https://github.com/haxtonsale"
+#define SMEXT_CONF_URL			"https://github.com/haxtonsale/LoadSoundScript"
 #define SMEXT_CONF_LOGTAG		"SNDSCRIPT"
-#define SMEXT_CONF_LICENSE		"GPL"
+#define SMEXT_CONF_LICENSE		"GPL-3.0"
 #define SMEXT_CONF_DATESTRING	__DATE__
 
 /** 

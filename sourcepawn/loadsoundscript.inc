@@ -22,7 +22,7 @@ methodmap SoundEntry
 	public native int GetDelayMsec();
 	
 	public native int GetWaveCount();
-	public native void GetWavePath(int iIndex, char[] sBuffer, int iMaxLength);
+	public native void GetWavePath(int iIndex, char[] sBuffer, int iMaxLength, bool bSkipSoundChars = true);
 	
 	public native bool OnlyPlayToOwner();
 }
@@ -73,6 +73,25 @@ stock bool AddScriptSoundToDownloadsTable(const char[] sName)
 			FormatEx(sCopy, sizeof(sCopy), "sound/%s", sPath);
 			
 			AddFileToDownloadsTable(sPath);
+		}
+	}
+}
+#endif
+
+#if defined _sdktools_sound_included
+stock void StopGameSound(int iEntity, const char[] sName)
+{
+	SoundEntry sound = GetSoundByName(sName);
+	if (sound != INVALID_SOUND_ENTRY)
+	{
+		int iNumSounds = sound.GetWaveCount();
+		
+		for (int i = 0; i < iNumSounds; i++)
+		{
+			char sPath[PLATFORM_MAX_PATH];
+			sound.GetWavePath(i, sPath, sizeof(sPath), false);
+			
+			StopSound(iEntity, sound.GetChannel(), sPath);
 		}
 	}
 }
