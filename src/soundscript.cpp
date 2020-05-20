@@ -4,10 +4,28 @@ CSoundScript::CSoundScript(ISoundEmitterSystemBase* soundemittersystem, const ch
 	soundemittersystem(soundemittersystem),
 	m_szFilename(filename)
 {
+#if defined _WIN32
+	// haha
+	int size = strlen(filename)+1;
+	char* filenamecpy = new char[size];
+
+	ke::SafeStrcpy(filenamecpy, size, filename);
+
+	for (int i = 0; i < size-1; i++)
+	{
+		if (filenamecpy[i] == '/')
+			filenamecpy[i] = '\\';
+	}
+
+	m_szFilename = filenamecpy;
+#endif
 }
 
 CSoundScript::~CSoundScript()
 {
+#if defined _WIN32
+	delete[] m_szFilename;
+#endif
 }
 
 void CSoundScript::Refresh()
