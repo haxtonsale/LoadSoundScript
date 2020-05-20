@@ -72,7 +72,7 @@ stock bool AddScriptSoundToDownloadsTable(const char[] sName)
 			char sCopy[PLATFORM_MAX_PATH];
 			FormatEx(sCopy, sizeof(sCopy), "sound/%s", sPath);
 			
-			AddFileToDownloadsTable(sPath);
+			AddFileToDownloadsTable(sCopy);
 		}
 	}
 }
