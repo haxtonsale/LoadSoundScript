@@ -7,6 +7,7 @@
  */
 
 #include "sdk/smsdk_ext.h"
+#include "SoundEmitterSystem/isoundemittersystembase.h"
 #include "extensions/iBinTools.h"
 #include <sm_argbuffer.h>
 #include "soundscript.h"

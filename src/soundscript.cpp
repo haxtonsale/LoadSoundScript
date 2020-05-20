@@ -6,7 +6,7 @@ CSoundScript::CSoundScript(ISoundEmitterSystemBase* soundemittersystem, const ch
 {
 #if defined _WIN32
 	// haha
-	int size = strlen(filename)+1;
+	int size = strnlen(filename, PLATFORM_MAX_PATH)+1;
 	char* filenamecpy = new char[size];
 
 	ke::SafeStrcpy(filenamecpy, size, filename);
