@@ -169,21 +169,23 @@ bool LoadSoundscript::SDK_OnLoad(char* error, size_t maxlen, bool late)
 
 void LoadSoundscript::SDK_OnAllLoaded()
 {
-	SM_GET_LATE_IFACE(BINTOOLS, bintools);
+	if (!handlesys->FindHandleType("SoundScriptType", &g_SoundScriptHandleType))
+	{
+		SM_GET_LATE_IFACE(BINTOOLS, bintools);
 
-	PassInfo passinfo[] = {
-		{PassType_Basic, PASSFLAG_BYVAL, sizeof(char*), NULL, 0},
-		{PassType_Basic, PASSFLAG_BYVAL, sizeof(bool), NULL, 0},
-		{PassType_Basic, PASSFLAG_BYVAL, sizeof(bool), NULL, 0},
-		{PassType_Basic, PASSFLAG_BYVAL, sizeof(bool), NULL, 0}
-	};
+		PassInfo passinfo[] = {
+			{PassType_Basic, PASSFLAG_BYVAL, sizeof(char*), NULL, 0},
+			{PassType_Basic, PASSFLAG_BYVAL, sizeof(bool), NULL, 0},
+			{PassType_Basic, PASSFLAG_BYVAL, sizeof(bool), NULL, 0},
+			{PassType_Basic, PASSFLAG_BYVAL, sizeof(bool), NULL, 0}
+		};
 
-	g_pCallAddSoundsFromFile = bintools->CreateCall(g_pAddSnd, CallConv_ThisCall, NULL, passinfo, 4);
+		g_pCallAddSoundsFromFile = bintools->CreateCall(g_pAddSnd, CallConv_ThisCall, NULL, passinfo, 4);
 
-	sharesys->AddNatives(myself, LoadSoundscriptNative::g_ExtensionNatives);
-	sharesys->RegisterLibrary(myself, "LoadSoundscript");
-
-	g_SoundScriptHandleType = handlesys->CreateType("SoundScriptType", &g_SoundScriptHandler, 0, NULL, NULL, myself->GetIdentity(), NULL);
+		sharesys->AddNatives(myself, LoadSoundscriptNative::g_ExtensionNatives);
+		sharesys->RegisterLibrary(myself, "LoadSoundscript");
+		g_SoundScriptHandleType = handlesys->CreateType("SoundScriptType", &g_SoundScriptHandler, 0, NULL, NULL, myself->GetIdentity(), NULL);
+	}
 }
 
 bool LoadSoundscript::QueryRunning(char* error, size_t maxlength)
