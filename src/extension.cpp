@@ -196,6 +196,7 @@ bool LoadSoundscript::QueryRunning(char* error, size_t maxlength)
 void LoadSoundscript::SDK_OnUnload()
 {
 	g_pCallAddSoundsFromFile->Destroy();
+	handlesys->RemoveType(g_SoundScriptHandleType, myself->GetIdentity());
 }
 
 bool LoadSoundscript::SDK_OnMetamodLoad(ISmmAPI *ismm, char *error, size_t maxlen, bool late)
