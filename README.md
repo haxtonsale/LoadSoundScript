@@ -27,14 +27,13 @@ Getting sound entry volume for every sound of a loaded soundscript:
 ```cpp
 #include <sourcemod>
 #include <loadsoundscript>
-#include <sdktools_sound>
 
 public void OnPluginStart()
 {
 	SoundScript sndscript = LoadSoundScript("somesoundscript.txt", true);
 
 	int iCount = sndscript.Count;
-	for (int i = 0; i < count; i++)
+	for (int i = 0; i < iCount; i++)
 	{
 		SoundEntry entry = sndscript.GetSound(i);
 
@@ -50,7 +49,6 @@ Getting sound paths of any sound entry:
 ```cpp
 #include <sourcemod>
 #include <loadsoundscript>
-#include <sdktools_sound>
 
 public void OnPluginStart()
 {
