@@ -96,18 +96,18 @@ CSoundScript* GetSoundScriptFromHandle(cell_t cellhandle, IPluginContext* pConte
 	HandleError hndlError;
 	HandleSecurity hndlSecurity;
 
-	hndlSecurity.pOwner = NULL;
+	hndlSecurity.pOwner = nullptr;
 	hndlSecurity.pIdentity = myself->GetIdentity();
 
 	CSoundScript* pSoundScript;
 	if ((hndlError = g_pHandleSys->ReadHandle(handle, g_SoundScriptHandleType, &hndlSecurity, (void**)&pSoundScript)) != HandleError_None)
 	{
-		if (pContext == NULL)
+		if (!pContext)
 			g_pSM->LogError(myself, "Invalid CSoundScript handle %x (error %d)", handle, hndlError);
 		else
 			pContext->ThrowNativeError("Invalid CSoundScript handle %x (error %d)", handle, hndlError);
 
-		return NULL;
+		return nullptr;
 	}
 
 	return pSoundScript;
@@ -117,7 +117,7 @@ void SoundScriptTypeHandler::OnHandleDestroy(HandleType_t type, void *object)
 {
 	CSoundScript* pSndScript = (CSoundScript*)object;
 
-	if (pSndScript != NULL)
+	if (pSndScript)
 		delete pSndScript;
 }
 
@@ -228,7 +228,7 @@ namespace LoadSoundscriptNative
 		HandleError hndlError;
 		Handle_t handle = g_pHandleSys->CreateHandle(g_SoundScriptHandleType, pSoundScript, pContext->GetIdentity(), myself->GetIdentity(), &hndlError);
 
-		if (handle == 0)
+		if (!handle)
 		{
 			delete pSoundScript;
 			pContext->ReportError("Could not create handle to CSoundScript! (error %d)", hndlError);
