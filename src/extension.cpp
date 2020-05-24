@@ -103,7 +103,7 @@ CSoundScript* GetSoundScriptFromHandle(cell_t cellhandle, IPluginContext* pConte
 	if ((hndlError = g_pHandleSys->ReadHandle(handle, g_SoundScriptHandleType, &hndlSecurity, (void**)&pSoundScript)) != HandleError_None)
 	{
 		if (!pContext)
-			g_pSM->LogError(myself, "Invalid CSoundScript handle %x (error %d)", handle, hndlError);
+			smutils->LogError(myself, "Invalid CSoundScript handle %x (error %d)", handle, hndlError);
 		else
 			pContext->ThrowNativeError("Invalid CSoundScript handle %x (error %d)", handle, hndlError);
 
