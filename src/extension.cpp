@@ -1,23 +1,33 @@
 #include "extension.h"
+#include <sm_argbuffer.h>
+#include "extensions/iBinTools.h"
+#include "soundchars.h"
+#include "soundscript.h"
 
-/**
- * @file extension.cpp
- * @brief Implement extension code here.
- */
+#ifdef PLATFORM_LINUX
+#include <link.h>
+#endif
 
-LoadSoundscript g_LoadSoundscript;		/**< Global singleton for extension's main interface */
+SH_DECL_HOOK6(IServerGameDLL, LevelInit, SH_NOATTRIB, false, bool, const char*, const char*, const char*, const char*, bool, bool);
+
+LoadSoundscript g_LoadSoundscript; // Global singleton for extension's main interface.
 SMEXT_LINK(&g_LoadSoundscript);
 
 ISoundEmitterSystemBase* soundemittersystem = 0;
-IBinTools* bintools = 0;
-ICallWrapper* g_pCallAddSoundsFromFile;
-void* g_pAddSnd;
 
-HandleType_t g_SoundScriptHandleType = 0;
+#ifndef SOUNDEMITTERSYSTEM_INTERFACE_VERSION_3
+IBinTools* bintools = 0;
+ICallWrapper* g_pCallAddSoundsFromFile = 0;
+void* g_pAddSnd = 0;
+#endif
+
+HandleType_t g_SoundScriptHandleType;
 SoundScriptTypeHandler g_SoundScriptHandler;
+CUtlVector<CSoundScript*> CSoundScript::LoadedSoundScripts;
 
 //-----------------------------------------------------------------------------
 
+#ifndef SOUNDEMITTERSYSTEM_INTERFACE_VERSION_3
 //From SM's stringutil.cpp
 size_t UTIL_DecodeHexString(unsigned char* buffer, size_t maxlength, const char* hexstr)
 {
@@ -68,12 +78,12 @@ void* GetAddressFromKeyValues(void* pBaseAddr, IGameConfig* pGameConfig, const c
 		return memutils->ResolveSymbol(pBaseAddr, &value[1]);
 
 	// Convert hex signature to byte pattern
-	unsigned char signature[200];
+	unsigned char signature[256];
 	size_t real_bytes = UTIL_DecodeHexString(signature, sizeof(signature), value);
 	if (real_bytes < 1)
 		return nullptr;
 
-#ifdef _LINUX
+#ifdef PLATFORM_LINUX
 	// The pointer returned by dlopen is not inside the loaded library memory region.
 	struct link_map* dlmap;
 	dlinfo(pBaseAddr, RTLD_DI_LINKMAP, &dlmap);
@@ -83,11 +93,20 @@ void* GetAddressFromKeyValues(void* pBaseAddr, IGameConfig* pGameConfig, const c
 	// Find that pattern in the pointed module.
 	return memutils->FindPattern(pBaseAddr, (char*)signature, real_bytes);
 }
+#endif // SOUNDEMITTERSYSTEM_INTERFACE_VERSION_3
 
 void AddSoundsFromFile(const char* filename, bool bPreload, bool bIsOverride, bool bRefresh)
 {
+#ifndef SOUNDEMITTERSYSTEM_INTERFACE_VERSION_3
+#ifndef NO_REFRESH_PARAM
 	ArgBuffer<ISoundEmitterSystemBase*, const char*, bool, bool, bool> vstk(soundemittersystem, filename, bPreload, bIsOverride, bRefresh);
+#else
+	ArgBuffer<ISoundEmitterSystemBase*, const char*, bool, bool> vstk(soundemittersystem, filename, bPreload, bIsOverride);
+#endif // NO_REFRESH_PARAM
 	g_pCallAddSoundsFromFile->Execute(vstk, nullptr);
+#else
+	soundemittersystem->AddSoundsFromFile(filename, bPreload, false, bIsOverride);
+#endif // SOUNDEMITTERSYSTEM_INTERFACE_VERSION_3
 }
 
 CSoundScript* GetSoundScriptFromHandle(cell_t cellhandle, IPluginContext* pContext)
@@ -125,17 +144,18 @@ void SoundScriptTypeHandler::OnHandleDestroy(HandleType_t type, void *object)
 
 bool LoadSoundscript::SDK_OnLoad(char* error, size_t maxlen, bool late)
 {
+#ifndef SOUNDEMITTERSYSTEM_INTERFACE_VERSION_3
 	sharesys->AddDependency(myself, "bintools.ext", true, true);
 
 	IGameConfig* pGameConfig;
-	char sError[255];
+	char sError[256];
 	if (!gameconfs->LoadGameConfigFile("loadsoundscript.games", &pGameConfig, sError, sizeof(sError)))
 	{
 		ke::SafeSprintf(error, maxlen, "Could not load loadsoundscript.games gamedata: %s", sError);
 		return false;
 	}
 
-#ifdef WIN32
+#ifdef PLATFORM_WINDOWS
 	// Find soundemittersystem.dll module in memory
 	HMODULE hSndEmitterSys = GetModuleHandleA("soundemittersystem.dll");
 	if (!hSndEmitterSys)
@@ -143,7 +163,7 @@ bool LoadSoundscript::SDK_OnLoad(char* error, size_t maxlen, bool late)
 		ke::SafeStrcpy(error, maxlen, "Could not find the soundemittersystem library in memory.");
 		return false;
 	}
-#else // WIN32
+#else
 	void* hSndEmitterSys = dlopen("soundemittersystem_srv.so", RTLD_LAZY);
 	if (!hSndEmitterSys)
 		hSndEmitterSys = dlopen("soundemittersystem.so", RTLD_LAZY);
@@ -153,16 +173,19 @@ bool LoadSoundscript::SDK_OnLoad(char* error, size_t maxlen, bool late)
 		ke::SafeStrcpy(error, maxlen, "Could not find the soundemittersystem library in memory.");
 		return false;
 	}
-#endif
+#endif // PLATFORM_WINDOWS
 
 	g_pAddSnd = GetAddressFromKeyValues(hSndEmitterSys, pGameConfig, "CSoundEmitterSystemBase::AddSoundsFromFile");
 	if (!g_pAddSnd)
 	{
-		ke::SafeStrcpy(error, maxlen, "Could not find the ISoundEmitterSystemBase::AddSoundsFromFile signature");
+		ke::SafeStrcpy(error, maxlen, "Could not find the ISoundEmitterSystemBase::AddSoundsFromFile signature.");
 		return false;
 	}
 
 	gameconfs->CloseGameConfigFile(pGameConfig);
+#endif // SOUNDEMITTERSYSTEM_INTERFACE_VERSION_3
+
+	SH_ADD_HOOK(IServerGameDLL, LevelInit, gamedll, SH_MEMBER(this, &LoadSoundscript::LevelInit), false);
 
 	return true;
 }
@@ -171,16 +194,19 @@ void LoadSoundscript::SDK_OnAllLoaded()
 {
 	if (!handlesys->FindHandleType("SoundScriptType", &g_SoundScriptHandleType))
 	{
+#ifndef SOUNDEMITTERSYSTEM_INTERFACE_VERSION_3
 		SM_GET_LATE_IFACE(BINTOOLS, bintools);
 
 		PassInfo passinfo[] = {
 			{PassType_Basic, PASSFLAG_BYVAL, sizeof(char*), NULL, 0},
 			{PassType_Basic, PASSFLAG_BYVAL, sizeof(bool), NULL, 0},
 			{PassType_Basic, PASSFLAG_BYVAL, sizeof(bool), NULL, 0},
-			{PassType_Basic, PASSFLAG_BYVAL, sizeof(bool), NULL, 0}
+#ifndef NO_REFRESH_PARAM
+			{PassType_Basic, PASSFLAG_BYVAL, sizeof(bool), NULL, 0},
+#endif
 		};
-
-		g_pCallAddSoundsFromFile = bintools->CreateCall(g_pAddSnd, CallConv_ThisCall, NULL, passinfo, 4);
+		g_pCallAddSoundsFromFile = bintools->CreateCall(g_pAddSnd, CallConv_ThisCall, NULL, passinfo, sizeof(passinfo));
+#endif
 
 		sharesys->AddNatives(myself, LoadSoundscriptNative::g_ExtensionNatives);
 		sharesys->RegisterLibrary(myself, "LoadSoundscript");
@@ -188,17 +214,35 @@ void LoadSoundscript::SDK_OnAllLoaded()
 	}
 }
 
+bool LoadSoundscript::LevelInit(char const* pMapName, char const* pMapEntities, char const* pOldLevel, char const* pLandmarkName, bool loadGame, bool background)
+{
+	// Since all loaded sounds should be deleted by now we have to load them again!
+	int iCount = CSoundScript::LoadedSoundScripts.Count();
+	for (int i = 0; i < iCount; i++)
+	{
+		CSoundScript* script = CSoundScript::LoadedSoundScripts[i];
+		AddSoundsFromFile(script->GetFilename(), script->ShouldPreload(), true, false);
+	}
+
+	RETURN_META_VALUE(MRES_IGNORED, true);
+}
+
 bool LoadSoundscript::QueryRunning(char* error, size_t maxlength)
 {
+#ifndef SOUNDEMITTERSYSTEM_INTERFACE_VERSION_3
 	SM_CHECK_IFACE(BINTOOLS, bintools);
+#endif
 
 	return true;
 }
 
 void LoadSoundscript::SDK_OnUnload()
 {
+#ifndef SOUNDEMITTERSYSTEM_INTERFACE_VERSION_3
 	g_pCallAddSoundsFromFile->Destroy();
+#endif
 	handlesys->RemoveType(g_SoundScriptHandleType, myself->GetIdentity());
+	SH_REMOVE_HOOK(IServerGameDLL, LevelInit, gamedll, SH_MEMBER(this, &LoadSoundscript::LevelInit), false);
 }
 
 bool LoadSoundscript::SDK_OnMetamodLoad(ISmmAPI *ismm, char *error, size_t maxlen, bool late)
@@ -236,7 +280,7 @@ namespace LoadSoundscriptNative
 		}
 		else
 		{
-			AddSoundsFromFile(sPath, params[2], params[3], params[4]);
+			AddSoundsFromFile(sPath, params[2], true, false);
 			pSoundScript->Refresh();
 			return handle;
 		}

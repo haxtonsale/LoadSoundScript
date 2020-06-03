@@ -1,8 +1,5 @@
 #ifndef SOUNDSCRIPT_H
 #define SOUNDSCRIPT_H
-#ifdef _WIN32
-#pragma once
-#endif
 
 #include "sdk/smsdk_ext.h"
 #include "SoundEmitterSystem/isoundemittersystembase.h"
@@ -15,13 +12,19 @@ public:
 
 	// Iterates through all sound entries and gets all sounds that belong to our script file.
 	void Refresh();
-	int Count();
+	const char* GetFilename() { return m_szFilename; };
+	bool ShouldPreload() { return m_bShouldPreload; };
+	int Count() { return m_iCount; };
 	const char* GetSound(int index);
+
+	static CUtlVector<CSoundScript*> LoadedSoundScripts;
 
 private:
 	ISoundEmitterSystemBase* soundemittersystem;
 	CUtlVector<const char*> m_SoundEntries;
+	int m_iCount; // The number of loaded sounds doesn't change, so we can keep it here.
 	const char* m_szFilename;
+	bool m_bShouldPreload;
 };
 
 #endif // SOUNDSCRIPT_H

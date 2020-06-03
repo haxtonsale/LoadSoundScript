@@ -8,13 +8,16 @@
 
 #include "sdk/smsdk_ext.h"
 #include "SoundEmitterSystem/isoundemittersystembase.h"
-#include "extensions/iBinTools.h"
-#include <sm_argbuffer.h>
-#include "soundscript.h"
-#include "soundchars.h"
 
-#ifdef _LINUX
-#include <link.h>
+#ifdef INTERFACES_H
+// I don't think we have a way to check whether SOUNDEMITTERSYSTEM_INTERFACE_VERSION is VSoundEmitter003 on compile time,
+// so we'll have to go with this wild assumption that VSoundEmitter002 is never defined in interfaces.h.
+#define SOUNDEMITTERSYSTEM_INTERFACE_VERSION_3
+#endif
+
+#if SOURCE_ENGINE <= SOURCE_ENGINE_LEFT4DEAD2
+// Some games don't have the bRefresh parameter in AddSoundsFromFile.
+#define NO_REFRESH_PARAM
 #endif
 
 class SoundScriptTypeHandler : public IHandleTypeDispatch
@@ -22,7 +25,6 @@ class SoundScriptTypeHandler : public IHandleTypeDispatch
 public:
 	void OnHandleDestroy(HandleType_t type, void* object);
 };
-
 
 /**
  * @brief Sample implementation of the SDK Extension.
@@ -65,6 +67,12 @@ public:
 	 * @return			True if working, false otherwise.
 	 */
 	virtual bool QueryRunning(char* error, size_t maxlength);
+
+	/**
+	 * Loaded sound entries get removed on level shutdown, so we need to load them again
+	 * at level init.
+	 */
+	virtual bool LevelInit(char const* pMapName, char const* pMapEntities, char const* pOldLevel, char const* pLandmarkName, bool loadGame, bool background);
 public:
 #if defined SMEXT_CONF_METAMOD
 	/**
@@ -100,8 +108,11 @@ public:
 #endif
 };
 
+#ifndef SOUNDEMITTERSYSTEM_INTERFACE_VERSION_3
 size_t UTIL_DecodeHexString(unsigned char* buffer, size_t maxlength, const char* hexstr);
 void* GetAddressFromKeyValues(void* pBaseAddr, IGameConfig* pGameConfig, const char* sKey);
+#endif
+
 void AddSoundsFromFile(const char* filename, bool bPreload, bool bIsOverride, bool bRefresh);
 
 namespace LoadSoundscriptNative

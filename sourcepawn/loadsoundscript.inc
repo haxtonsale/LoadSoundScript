@@ -29,7 +29,7 @@ methodmap SoundEntry
 
 methodmap SoundScript < Handle
 {
-	// Retrieve the amount of loaded sound entries.
+	// Retrieves the amount of loaded sound entries.
 	property int Count
 	{
 		public native get();
@@ -43,10 +43,8 @@ methodmap SoundScript < Handle
  *
  * @param sPath          Path to the soundscript text file.
  * @param bPreload       Whether sounds should be preloaded.
- * @param bIsOverride    Whether we should override sounds that already exist. Note that in LevelShutdown all overrides are cleared.
- * @param bRefresh       Whether we should update sound parameters of sounds that already exist.
  */
-native SoundScript LoadSoundScript(const char[] sPath, bool bPreload = false, bool bIsOverride = false, bool bRefresh = false);
+native SoundScript LoadSoundScript(const char[] sPath, bool bPreload = false);
 
 /*
  * Retrieves sound entries index from its name.

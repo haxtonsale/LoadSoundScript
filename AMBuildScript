@@ -235,7 +235,6 @@ class ExtensionConfig(object):
     ]
     cxx.linkflags += [
       '/MACHINE:X86',
-      'legacy_stdio_definitions.lib',
       'kernel32.lib',
       'user32.lib',
       'gdi32.lib',
@@ -248,6 +247,7 @@ class ExtensionConfig(object):
       'uuid.lib',
       'odbc32.lib',
       'odbccp32.lib',
+      'legacy_stdio_definitions.lib',
     ]
 
     if builder.options.opt == '1':
