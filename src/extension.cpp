@@ -178,7 +178,7 @@ bool LoadSoundscript::SDK_OnLoad(char* error, size_t maxlen, bool late)
 	g_pAddSnd = GetAddressFromKeyValues(hSndEmitterSys, pGameConfig, "CSoundEmitterSystemBase::AddSoundsFromFile");
 	if (!g_pAddSnd)
 	{
-		ke::SafeStrcpy(error, maxlen, "Could not find the ISoundEmitterSystemBase::AddSoundsFromFile signature.");
+		ke::SafeStrcpy(error, maxlen, "Could not find the CSoundEmitterSystemBase::AddSoundsFromFile signature.");
 		return false;
 	}
 
