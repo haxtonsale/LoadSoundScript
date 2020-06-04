@@ -12,7 +12,7 @@ Loading a soundscript and playing one of the loaded sounds to a client:
 public void OnPluginStart()
 {
 	// Path must be relative to the game folder
-	LoadSoundScript("somesoundscript.txt", true);
+	LoadSoundScript("somesoundscript.txt");
 	RegConsoleCmd("soundscript_test", Cmd_SoundScriptTest);
 }
 
@@ -30,7 +30,7 @@ Getting sound entry volume for every sound of a loaded soundscript:
 
 public void OnPluginStart()
 {
-	SoundScript sndscript = LoadSoundScript("somesoundscript.txt", true);
+	SoundScript sndscript = LoadSoundScript("somesoundscript.txt");
 
 	int iCount = sndscript.Count;
 	for (int i = 0; i < iCount; i++)
@@ -40,7 +40,7 @@ public void OnPluginStart()
 		char sName[128];
 		entry.GetName(sName, sizeof(sName));
 		
-		PrintToServer("The volume of \"%s\" is %.2f", sName, entry.GetVolume(IntervalStart));
+		PrintToServer("The volume of \"%s\" is %.2f", sName, entry.GetVolume());
 	}
 }
 ```

@@ -16,9 +16,9 @@ methodmap SoundEntry
 	public native void GetName(char[] sBuffer, int iMaxLength);
 	
 	public native int GetChannel();
-	public native float GetVolume(SoundInterval iInterval);
-	public native float GetPitch(SoundInterval iInterval);
-	public native float GetSoundLevel(SoundInterval iInterval);
+	public native float GetVolume(SoundInterval iInterval = IntervalStart);
+	public native float GetPitch(SoundInterval iInterval = IntervalStart);
+	public native float GetSoundLevel(SoundInterval iInterval = IntervalStart);
 	public native int GetDelayMsec();
 	
 	public native int GetWaveCount();
