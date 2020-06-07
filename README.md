@@ -1,4 +1,4 @@
-# LoadSoundScript
+# LoadSoundScript<br>![Linux Build](https://github.com/haxtonsale/LoadSoundScript/workflows/Linux%20Build/badge.svg?event=push) ![Windows Build](https://github.com/haxtonsale/LoadSoundScript/workflows/Windows%20Build/badge.svg?event=push)
 
 A SourceMod extension that provides more soundscript functionality.
 
