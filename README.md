@@ -1,4 +1,4 @@
-# LoadSoundScript
+# LoadSoundScript<br>![CI](https://github.com/haxtonsale/LoadSoundScript/workflows/CI/badge.svg?event=push)
 
 A SourceMod extension that provides more soundscript functionality.
 
