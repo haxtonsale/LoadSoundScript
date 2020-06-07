@@ -2,7 +2,7 @@
 #define SOUNDSCRIPT_H
 
 #include "sdk/smsdk_ext.h"
-#include "SoundEmitterSystem/isoundemittersystembase.h"
+#include <SoundEmitterSystem/isoundemittersystembase.h>
 
 class CSoundScript
 {

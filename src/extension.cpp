@@ -1,8 +1,8 @@
 #include "extension.h"
-#include <sm_argbuffer.h>
-#include "extensions/iBinTools.h"
-#include "soundchars.h"
 #include "soundscript.h"
+#include <sm_argbuffer.h>
+#include <extensions/IBinTools.h>
+#include <soundchars.h>
 
 #ifdef PLATFORM_LINUX
 #include <link.h>

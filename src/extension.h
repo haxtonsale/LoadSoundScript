@@ -7,7 +7,7 @@
  */
 
 #include "sdk/smsdk_ext.h"
-#include "SoundEmitterSystem/isoundemittersystembase.h"
+#include <SoundEmitterSystem/isoundemittersystembase.h>
 
 #ifdef INTERFACES_H
 // I don't think we have a way to check whether SOUNDEMITTERSYSTEM_INTERFACE_VERSION is VSoundEmitter003 on compile time,
