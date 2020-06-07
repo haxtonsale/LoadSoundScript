@@ -1,0 +1,34 @@
+name: Linux Build
+
+on: [push, pull_request]
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    env:
+      CC: clang
+      CXX: clang
+    
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Install Packages
+      run: sudo apt-get install libc6-dev-i386 g++-multilib
+    
+    - name: Install Dependencies
+      run: |
+        git clone --depth 1 --recursive -b 1.10-dev https://github.com/alliedmodders/sourcemod.git
+        ./sourcemod/tools/checkout-deps.sh
+      
+    - name: Build
+      run: |
+        mkdir build && cd build
+        python ../configure.py --sdks present --enable-optimize
+        ~/.local/bin/ambuild
+              
+    - name: Upload
+      if: github.event_name == 'push'
+      uses: actions/upload-artifact@v2
+      with:
+        name: LoadSoundScript-linux-${{github.run_number}}
+        path: ${{github.workspace}}/build/loadsoundscript
