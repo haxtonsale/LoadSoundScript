@@ -59,11 +59,24 @@ void SoundScriptTypeHandler::OnHandleDestroy(HandleType_t type, void *object)
 		delete pSndScript;
 }
 
+bool OnLevelInit(char const* pMapName, char const* pMapEntities, char const* pOldLevel, char const* pLandmarkName, bool loadGame, bool background)
+{
+	// Since all loaded sounds should be deleted by now we have to load them again!
+	int iCount = CSoundScript::LoadedSoundScripts.Count();
+	for (int i = 0; i < iCount; i++)
+	{
+		CSoundScript* script = CSoundScript::LoadedSoundScripts[i];
+		AddSoundOverrides(script->GetFilename(), script->ShouldPreload());
+	}
+
+	RETURN_META_VALUE(MRES_IGNORED, true);
+}
+
 //-----------------------------------------------------------------------------
 
 bool LoadSoundscript::SDK_OnLoad(char* error, size_t maxlen, bool late)
 {
-	SH_ADD_HOOK(IServerGameDLL, LevelInit, gamedll, SH_MEMBER(this, &LoadSoundscript::LevelInit), false);
+	SH_ADD_HOOK(IServerGameDLL, LevelInit, gamedll, &OnLevelInit, false);
 
 	return true;
 }
@@ -78,23 +91,10 @@ void LoadSoundscript::SDK_OnAllLoaded()
 	}
 }
 
-bool LoadSoundscript::LevelInit(char const* pMapName, char const* pMapEntities, char const* pOldLevel, char const* pLandmarkName, bool loadGame, bool background)
-{
-	// Since all loaded sounds should be deleted by now we have to load them again!
-	int iCount = CSoundScript::LoadedSoundScripts.Count();
-	for (int i = 0; i < iCount; i++)
-	{
-		CSoundScript* script = CSoundScript::LoadedSoundScripts[i];
-		AddSoundOverrides(script->GetFilename(), script->ShouldPreload());
-	}
-
-	RETURN_META_VALUE(MRES_IGNORED, true);
-}
-
 void LoadSoundscript::SDK_OnUnload()
 {
 	handlesys->RemoveType(g_SoundScriptHandleType, myself->GetIdentity());
-	SH_REMOVE_HOOK(IServerGameDLL, LevelInit, gamedll, SH_MEMBER(this, &LoadSoundscript::LevelInit), false);
+	SH_REMOVE_HOOK(IServerGameDLL, LevelInit, gamedll, &OnLevelInit, false);
 }
 
 bool LoadSoundscript::SDK_OnMetamodLoad(ISmmAPI *ismm, char *error, size_t maxlen, bool late)

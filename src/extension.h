@@ -68,11 +68,6 @@ public:
 	 */
 	//virtual bool QueryRunning(char* error, size_t maxlength);
 
-	/**
-	 * Loaded sound entries get removed on level shutdown, so we need to load them again
-	 * at level init.
-	 */
-	bool LevelInit(char const* pMapName, char const* pMapEntities, char const* pOldLevel, char const* pLandmarkName, bool loadGame, bool background);
 public:
 #if defined SMEXT_CONF_METAMOD
 	/**
@@ -109,6 +104,12 @@ public:
 };
 
 void AddSoundOverrides(const char* filename, bool bPreload);
+
+/**
+ * Loaded sound entries get removed on level shutdown, so we need to load them again
+ * at level init.
+ */
+bool OnLevelInit(char const* pMapName, char const* pMapEntities, char const* pOldLevel, char const* pLandmarkName, bool loadGame, bool background);
 
 namespace LoadSoundscriptNative
 {
