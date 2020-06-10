@@ -9,7 +9,7 @@ builder.SetBuildFolder('loadsoundscript')
 folder_list = [
   'addons/sourcemod/extensions',
   'addons/sourcemod/scripting/include',
-  'addons/sourcemod/gamedata',
+  #'addons/sourcemod/gamedata',
   #'addons/sourcemod/configs',
 ]
 
@@ -34,9 +34,9 @@ CopyFiles('sourcepawn', 'addons/sourcemod/scripting/include',
 )
 
 # GameData files
-CopyFiles('gamedata', 'addons/sourcemod/gamedata',
-  [ 'loadsoundscript.games.txt' ] 
-)
+#CopyFiles('gamedata', 'addons/sourcemod/gamedata',
+#  [ 'loadsoundscript.games.txt' ] 
+#)
 
 # Config Files
 #CopyFiles('configs', 'addons/sourcemod/configs',
