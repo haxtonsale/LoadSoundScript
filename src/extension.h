@@ -15,7 +15,7 @@
 #define SOUNDEMITTERSYSTEM_INTERFACE_VERSION_3
 #endif
 
-#if SOURCE_ENGINE <= SOURCE_ENGINE_LEFT4DEAD2
+#if SOURCE_ENGINE == SE_LEFT4DEAD2 || SOURCE_ENGINE == SE_LEFT4DEAD || SOURCE_ENGINE == SE_ORANGEBOX
 // Some games don't have the bRefresh parameter in AddSoundsFromFile.
 #define NO_REFRESH_PARAM
 #endif

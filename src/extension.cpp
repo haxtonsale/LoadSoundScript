@@ -97,6 +97,7 @@ void* GetAddressFromKeyValues(void* pBaseAddr, IGameConfig* pGameConfig, const c
 
 void AddSoundsFromFile(const char* filename, bool bPreload, bool bIsOverride, bool bRefresh)
 {
+	/*
 #ifndef SOUNDEMITTERSYSTEM_INTERFACE_VERSION_3
 #ifndef NO_REFRESH_PARAM
 	ArgBuffer<ISoundEmitterSystemBase*, const char*, bool, bool, bool> vstk(soundemittersystem, filename, bPreload, bIsOverride, bRefresh);
@@ -104,6 +105,16 @@ void AddSoundsFromFile(const char* filename, bool bPreload, bool bIsOverride, bo
 	ArgBuffer<ISoundEmitterSystemBase*, const char*, bool, bool> vstk(soundemittersystem, filename, bPreload, bIsOverride);
 #endif // NO_REFRESH_PARAM
 	g_pCallAddSoundsFromFile->Execute(vstk, nullptr);
+#else
+	soundemittersystem->AddSoundsFromFile(filename, bPreload, false, bIsOverride);
+#endif // SOUNDEMITTERSYSTEM_INTERFACE_VERSION_3
+	*/
+#ifndef SOUNDEMITTERSYSTEM_INTERFACE_VERSION_3
+#ifndef NO_REFRESH_PARAM
+	soundemittersystem->AddSoundOverrides(filename, bRefresh);
+#else
+	soundemittersystem->AddSoundOverrides(filename);
+#endif // NO_REFRESH_PARAM
 #else
 	soundemittersystem->AddSoundsFromFile(filename, bPreload, false, bIsOverride);
 #endif // SOUNDEMITTERSYSTEM_INTERFACE_VERSION_3
