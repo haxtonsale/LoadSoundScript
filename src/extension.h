@@ -16,8 +16,7 @@
 #endif
 
 #if SOURCE_ENGINE <= SE_ORANGEBOX || SOURCE_ENGINE == SE_LEFT4DEAD2 || SOURCE_ENGINE == SE_LEFT4DEAD || SOURCE_ENGINE == SE_NUCLEARDAWN
-// Some games don't have the bRefresh parameter in AddSoundsFromFile.
-
+// Some games don't have the bPreload parameter in AddSoundOverrides.
 #define NO_REFRESH_PARAM
 #endif
 
@@ -67,13 +66,13 @@ public:
 	 * @param maxlen	Size of error message buffer.
 	 * @return			True if working, false otherwise.
 	 */
-	virtual bool QueryRunning(char* error, size_t maxlength);
+	//virtual bool QueryRunning(char* error, size_t maxlength);
 
 	/**
 	 * Loaded sound entries get removed on level shutdown, so we need to load them again
 	 * at level init.
 	 */
-	virtual bool LevelInit(char const* pMapName, char const* pMapEntities, char const* pOldLevel, char const* pLandmarkName, bool loadGame, bool background);
+	bool LevelInit(char const* pMapName, char const* pMapEntities, char const* pOldLevel, char const* pLandmarkName, bool loadGame, bool background);
 public:
 #if defined SMEXT_CONF_METAMOD
 	/**
@@ -109,12 +108,7 @@ public:
 #endif
 };
 
-#ifndef SOUNDEMITTERSYSTEM_INTERFACE_VERSION_3
-size_t UTIL_DecodeHexString(unsigned char* buffer, size_t maxlength, const char* hexstr);
-void* GetAddressFromKeyValues(void* pBaseAddr, IGameConfig* pGameConfig, const char* sKey);
-#endif
-
-void AddSoundsFromFile(const char* filename, bool bPreload, bool bIsOverride, bool bRefresh);
+void AddSoundOverrides(const char* filename, bool bPreload);
 
 namespace LoadSoundscriptNative
 {
