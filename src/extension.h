@@ -103,7 +103,7 @@ public:
 #endif
 };
 
-void AddSoundOverrides(const char* filename, bool bPreload);
+void AddSoundOverrides(const char* filename);
 
 /**
  * Loaded sound entries get removed on level shutdown, so we need to load them again

@@ -15,16 +15,16 @@ CUtlVector<CSoundScript*> CSoundScript::LoadedSoundScripts;
 
 //-----------------------------------------------------------------------------
 
-void AddSoundOverrides(const char* filename, bool bPreload)
+void AddSoundOverrides(const char* filename)
 {
 #ifndef SOUNDEMITTERSYSTEM_INTERFACE_VERSION_3
 #ifndef NO_REFRESH_PARAM
-	soundemittersystem->AddSoundOverrides(filename, bPreload);
+	soundemittersystem->AddSoundOverrides(filename, false);
 #else
 	soundemittersystem->AddSoundOverrides(filename);
 #endif // NO_REFRESH_PARAM
 #else
-	soundemittersystem->AddSoundsFromFile(filename, bPreload, false, true);
+	soundemittersystem->AddSoundsFromFile(filename, false, false, true);
 #endif // SOUNDEMITTERSYSTEM_INTERFACE_VERSION_3
 }
 
@@ -66,7 +66,7 @@ bool OnLevelInit(char const* pMapName, char const* pMapEntities, char const* pOl
 	for (int i = 0; i < iCount; i++)
 	{
 		CSoundScript* script = CSoundScript::LoadedSoundScripts[i];
-		AddSoundOverrides(script->GetFilename(), script->ShouldPreload());
+		AddSoundOverrides(script->GetFilename());
 	}
 
 	RETURN_META_VALUE(MRES_IGNORED, true);
@@ -132,7 +132,7 @@ namespace LoadSoundscriptNative
 		}
 		else
 		{
-			AddSoundOverrides(sPath, params[2]);
+			AddSoundOverrides(sPath);
 			pSoundScript->Refresh();
 			return handle;
 		}

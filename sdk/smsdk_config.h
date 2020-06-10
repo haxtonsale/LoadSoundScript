@@ -8,8 +8,8 @@
 
 /* Basic information exposed publicly */
 #define SMEXT_CONF_NAME			"LoadSoundscript"
-#define SMEXT_CONF_DESCRIPTION	"More soundscript functionality in your SM plugins"
-#define SMEXT_CONF_VERSION		"1.0.1"
+#define SMEXT_CONF_DESCRIPTION	"More soundscript functionality for SourceMod plugins"
+#define SMEXT_CONF_VERSION		"1.1.0"
 #define SMEXT_CONF_AUTHOR		"haxtonsale"
 #define SMEXT_CONF_URL			"https://github.com/haxtonsale/LoadSoundScript"
 #define SMEXT_CONF_LOGTAG		"SNDSCRIPT"
