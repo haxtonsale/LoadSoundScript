@@ -13,7 +13,6 @@ public:
 	// Iterates through all sound entries and gets all sounds that belong to our script file.
 	void Refresh();
 	const char* GetFilename() { return m_szFilename; };
-	bool ShouldPreload() { return m_bShouldPreload; };
 	int Count() { return m_iCount; };
 	const char* GetSound(int index);
 
@@ -24,7 +23,6 @@ private:
 	CUtlVector<const char*> m_SoundEntries;
 	int m_iCount; // The number of loaded sounds doesn't change, so we can keep it here.
 	const char* m_szFilename;
-	bool m_bShouldPreload;
 };
 
 #endif // SOUNDSCRIPT_H
