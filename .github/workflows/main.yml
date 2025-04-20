@@ -59,7 +59,7 @@ jobs:
         mkdir build
         cd build
         call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools\vsvars32.bat"
-        python ../configure.py --sdks tf2 --enable-optimize --hl2sdk-manifest-path="../../sourcemod"
+        python ../configure.py --sdks tf2 --enable-optimize
         ambuild
       shell: cmd
               
