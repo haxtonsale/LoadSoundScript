@@ -6,8 +6,8 @@ jobs:
   build-linux:
     runs-on: ubuntu-latest
     env:
-      CC: clang
-      CXX: clang
+      CC: gcc
+      CXX: g++
     
     steps:
     - uses: actions/checkout@v2
@@ -17,13 +17,14 @@ jobs:
     
     - name: Install Dependencies
       run: |
-        git clone --depth 1 --recursive -b 1.10-dev https://github.com/alliedmodders/sourcemod.git
+        git clone --depth 1 --recursive -b 1.12-dev https://github.com/alliedmodders/sourcemod.git
+        cp -R ./sourcemod/hl2sdk-manifests ./
         ./sourcemod/tools/checkout-deps.sh
       
     - name: Build
       run: |
         mkdir build && cd build
-        python ../configure.py --sdks present --enable-optimize
+        python ../configure.py --sdks tf2 --enable-optimize
         ~/.local/bin/ambuild
               
     - name: Upload
@@ -41,7 +42,8 @@ jobs:
     
     - name: Install Dependencies
       run: |
-        git clone --depth 1 --recursive -b 1.10-dev https://github.com/alliedmodders/sourcemod.git
+        git clone --depth 1 --recursive -b 1.12-dev https://github.com/alliedmodders/sourcemod.git
+        xcopy /e /k /h /i .\sourcemod\hl2sdk-manifests .\
         powershell -noprofile -executionpolicy bypass -file .\sourcemod\tools\checkout-deps.ps1
       
     - name: Build
@@ -49,7 +51,7 @@ jobs:
         mkdir build
         cd build
         call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools\vsvars32.bat"
-        python ../configure.py --sdks present --enable-optimize
+        python ../configure.py --sdks tf2 --enable-optimize
         ambuild
       shell: cmd
               

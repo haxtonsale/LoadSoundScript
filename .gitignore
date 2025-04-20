@@ -40,3 +40,4 @@ build/
 
 # Compiled SourceMod plugins
 *.smx
+/hl2sdk-manifests
