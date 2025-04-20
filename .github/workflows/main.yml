@@ -52,6 +52,7 @@ jobs:
       run: |
         git clone --depth 1 --recursive -b 1.12-dev https://github.com/alliedmodders/sourcemod.git
         powershell -noprofile -executionpolicy bypass -file .\sourcemod\tools\checkout-deps.ps1
+        robocopy sourcemod\hl2sdk-manifest-path . /e
       
     - name: Build
       run: |
