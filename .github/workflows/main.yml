@@ -35,7 +35,7 @@ jobs:
         path: ${{github.workspace}}/build/loadsoundscript
   
   build-windows:
-    runs-on: windows-latest
+    runs-on: windows-2019
     
     steps:
     - uses: actions/checkout@v4
@@ -44,7 +44,7 @@ jobs:
       run: |
         git clone --depth 1 --recursive -b 1.12-dev https://github.com/alliedmodders/sourcemod.git
         xcopy /e /k /h /i .\sourcemod\hl2sdk-manifests .\
-        powershell -Command "Start-Process -Verb RunAs powershell '-executionpolicy bypass -file .\sourcemod\tools\checkout-deps.ps1' "
+        powershell -noprofile -executionpolicy bypass -file .\sourcemod\tools\checkout-deps.ps1
       
     - name: Build
       run: |
