@@ -35,7 +35,7 @@ jobs:
         path: ${{github.workspace}}/build/loadsoundscript
   
   build-windows:
-    runs-on: windows-2019
+    runs-on: windows-latest
     
     steps:
     - uses: actions/checkout@v4
@@ -52,14 +52,14 @@ jobs:
       run: |
         git clone --depth 1 --recursive -b 1.12-dev https://github.com/alliedmodders/sourcemod.git
         powershell -noprofile -executionpolicy bypass -file .\sourcemod\tools\checkout-deps.ps1
-        robocopy sourcemod\hl2sdk-manifests . /e & exit 0
+        #robocopy sourcemod\hl2sdk-manifests . /e & exit 0
       
     - name: Build
       run: |
         mkdir build
         cd build
         call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools\vsvars32.bat"
-        python ../configure.py --sdks tf2 --enable-optimize
+        python ../configure.py --sdks tf2 --enable-optimize --hl2sdk-manifest-path=..\..\sourcemod\hl2sdk-manifests
         ambuild
       shell: cmd
               
