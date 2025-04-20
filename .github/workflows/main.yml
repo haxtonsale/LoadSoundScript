@@ -45,7 +45,7 @@ jobs:
         git clone --depth 1 --recursive -b 1.12-dev https://github.com/alliedmodders/sourcemod.git
         xcopy /e /k /h /i .\sourcemod\hl2sdk-manifests .\
         powershell -noprofile -executionpolicy bypass -file .\sourcemod\tools\checkout-deps.ps1
-        python -m pip install ./ambuild
+        python -m pip install --user ./ambuild
       
     - name: Build
       run: |
