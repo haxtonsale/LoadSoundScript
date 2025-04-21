@@ -218,12 +218,10 @@ class ExtensionConfig(object):
       '-Wno-register',
       '-fvisibility-inlines-hidden',
       '-std=c++17',
-      #'-Wno-error=class-memaccess',
       '-Wno-error=address',
       '-Wno-error=unused-result',
       '-Wno-unknown-pragmas',
       '-Wno-dangling-else',
-      '-Wno-class-memaccess',
 	  '-fpermissive',
     ]
 
