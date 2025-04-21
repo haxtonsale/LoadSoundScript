@@ -39,6 +39,7 @@ jobs:
           git clone --depth 1 --recursive -b 1.12-dev https://github.com/alliedmodders/sourcemod.git
           cp -R ./sourcemod/hl2sdk-manifests ./
           ./sourcemod/tools/checkout-deps.sh -s ${{ join(fromJSON(env.SDKS)) }}
+          cd mmsource-1.12 && git checkout 1.12-dev && cd ..
 
       - name: Install Linux dependencies
         if: startsWith(runner.os, 'Linux')
