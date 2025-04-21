@@ -1,4 +1,4 @@
-# LoadSoundScript [![CI](https://github.com/haxtonsale/LoadSoundScript/workflows/CI/badge.svg?event=push)](https://github.com/haxtonsale/LoadSoundScript/actions?query=workflow%3ACI)
+# LoadSoundScript [![CI](https://github.com/haxtonsale/LoadSoundScript/actions/workflows/main.yml/badge.svg)](https://github.com/haxtonsale/LoadSoundScript/actions/workflows/main.yml)
 
 A SourceMod extension that provides more soundscript functionality.
 
