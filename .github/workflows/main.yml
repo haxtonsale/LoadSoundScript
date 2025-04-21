@@ -6,7 +6,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-22.04, ubuntu-latest, windows-latest]
         include:
           - os: windows-latest
             os_short: windows
@@ -15,6 +15,10 @@ jobs:
             os_short: linux
             compiler_cc: clang
             compiler_cxx: clang++
+          - os: ubuntu-22.04
+            os_short: linux
+            compiler_cc: clang-14
+            compiler_cxx: clang++-14
       fail-fast: false
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.os_short }}-${{ matrix.compiler_cc }}
