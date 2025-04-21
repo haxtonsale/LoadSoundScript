@@ -74,5 +74,5 @@ jobs:
         if: github.event_name == 'push'
         uses: actions/upload-artifact@v4
         with:
-          name: LoadSoundScript-${{ matrix.os_short }}-${{github.run_number}}
-          path: ${{github.workspace}}/build/loadsoundscript
+          name: LoadSoundScript-${{ matrix.os_short }}-${{ matrix.compiler_cc }}-${{ github.run_number }}
+          path: ${{ github.workspace }}/build/loadsoundscript
